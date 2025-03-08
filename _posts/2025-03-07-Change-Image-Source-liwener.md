@@ -1,4 +1,8 @@
-# 镜像源更换方法合集
+---
+title: "镜像源更换方法合集"
+date: 2025-03-07
+author: liwener
+---
 
 
 
@@ -78,5 +82,15 @@ deb http://security.ubuntu.com/ubuntu/ focal-security main restricted universe m
 # 预发布软件源，不建议启用
 # deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
 # # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
+```
+
+### Helm
+
+```shell
+helm repo add bitnami "https://helm-charts.itboon.top/bitnami" --force-update
+helm repo add grafana "https://helm-charts.itboon.top/grafana" --force-update
+helm repo add prometheus-community "https://helm-charts.itboon.top/prometheus-community" --force-update
+helm repo add ingress-nginx "https://helm-charts.itboon.top/ingress-nginx" --force-update
+helm repo update
 ```
 
