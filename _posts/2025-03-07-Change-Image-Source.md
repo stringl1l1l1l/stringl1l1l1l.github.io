@@ -4,7 +4,9 @@
 
 ## Docker
 
-####  Docker desktop
+```shell
+sudo vi /etc/docker/daemon.json
+```
 
 ```json
 {
@@ -22,12 +24,7 @@
 }
 ```
 
-#### docker cli
 
-```shell
- curl -fsSL https://get.docker.com -o get-docker.sh
- sudo sh get-docker.sh
-```
 
 ## Podman
 
