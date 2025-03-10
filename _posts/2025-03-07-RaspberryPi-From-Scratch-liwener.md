@@ -12,6 +12,8 @@ author: liwener
 lsb_release -a
 ```
 
+
+
 ### Apt 换源
 
 ```shell
@@ -133,6 +135,36 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ```
 docker pull forceless/pptagent
 ```
+
+
+
+### 配置 SSH 秘钥
+
+只有公钥可以上传，服务器使用公钥来验证由私钥生成的签名，认证客户端身份。
+
+客户端生成公钥
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+将公钥上传到服务器
+```bash
+# Windows 客户端
+scp ~/.ssh/id_rsa.pub user@example.com:~/
+
+# 在服务器端执行下面的命令
+mkdir  ~/.ssh
+chmod 700 ~/.ssh
+cat  ~/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+rm ~/id_rsa.pub
+```
+```bash
+# Linux 客户端
+ssh-copy-id user@example.com
+```
+
+
 
 ## 软件安装
 

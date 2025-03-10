@@ -28,6 +28,12 @@ sudo vi /etc/docker/daemon.json
 }
 ```
 
+重启docker服务
+```sh
+systemctl daemon-reload
+systemctl restart docker
+```
+
 
 
 ## Podman
