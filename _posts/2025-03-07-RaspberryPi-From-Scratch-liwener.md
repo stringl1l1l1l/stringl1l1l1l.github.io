@@ -136,6 +136,12 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 docker pull forceless/pptagent
 ```
 
+安装 Powerlevel10k 主题
+
+```sh
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+```
+
 
 
 ### 配置 SSH 秘钥

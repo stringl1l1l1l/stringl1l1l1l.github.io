@@ -22,10 +22,20 @@ winget install -e --id Kubernetes.kubectl
 
 ### 安装
 
-windows
+Windows
 
 ```sh
 winget install Helm.Helm
+```
+
+Linux（Debian）
+
+```sh
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
 ```
 
 ### 更换镜像源
@@ -44,7 +54,16 @@ helm repo update
 
 ### 安装
 
-https://github.com/kubernetes-sigs/kind/releases
+```sh
+# For AMD64 / x86_64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64
+
+# For ARM64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-arm64
+
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
 
 ### 创建集群
 
@@ -68,7 +87,23 @@ nodes:
 
 
 
+## Kubectl
+
+### 安装
+
+Linux
+
+```sh
+# x86-64
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+
+
 ## Dubbo
+
+创建命名空间
 
 ```sh
 kubectl create ns dubbo-demo
@@ -85,7 +120,7 @@ kubectl get pods -n dubbo-demo
 ### dubbo-admin
 
 ```sh
-git clone https://github.com/apache/dubbo-admin.git && cd /dubbo-admin/kubernetes
+git clone https://github.com/apache/dubbo-admin.git && cd ./dubbo-admin/kubernetes
 kubectl apply -f ./ -n dubbo-demo
 kubectl --namespace dubbo-demo port-forward service/dubbo-admin 38080:38080
 ```
