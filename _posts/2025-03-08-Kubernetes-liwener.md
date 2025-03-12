@@ -1,5 +1,5 @@
 ---
-title: "k8s部署"
+title: "Kubernetes部署与使用"
 date: 2025-03-08
 author: liwener
 ---
@@ -14,6 +14,14 @@ windows
 
 ```powershell
 winget install -e --id Kubernetes.kubectl
+```
+
+Linux
+
+```sh
+# x86-64
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
 
@@ -84,22 +92,6 @@ nodes:
 - role: control-plane
 - role: worker
 ```
-
-
-
-## Kubectl
-
-### 安装
-
-Linux
-
-```sh
-# x86-64
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-```
-
-
 
 ## Dubbo
 
