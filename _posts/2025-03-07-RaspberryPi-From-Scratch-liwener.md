@@ -189,3 +189,51 @@ newgrp docker
 
 
 
+### Clang 套件安装
+
+```sh
+# 1. clangd
+sudo apt install clangd
+# xx替换为填写安装的clangd版本号
+sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-xx 100
+
+# 2. clang-tidy
+sudo apt install clang-tidy
+
+# 3. clang-format
+sudo apt install clang-format
+
+# 4. clang
+sudo apt install clang
+```
+
+.clang-format 配置文件
+
+```yaml
+BasedOnStyle: WebKit
+Language: Cpp
+
+# 缩进规则
+UseTab: Never        # 禁止使用真实 Tab 字符，改用空格模拟
+TabWidth: 4          # 1 个 Tab 对应 4 个空格
+IndentWidth: 4       # 缩进宽度为 4 个空格（等同于 Tab 宽度）
+
+# 大括号换行风格（与 WebKit 风格一致）
+BreakBeforeBraces: Linux
+
+# 其他常用 WebKit 风格优化
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+BinPackParameters: false           # 禁止将函数参数挤在一行
+ColumnLimit: 120                   # 行宽限制 120
+PointerAlignment: Right            # 指针符号 `*` 靠近类型名
+SpaceBeforeParens: ControlStatements  # `if`/`for` 等控制语句后加空格
+
+# 额外自定义规则（可选）
+AlignAfterOpenBracket: AlwaysBreak
+AlignConsecutiveMacros: true
+AlignConsecutiveDeclarations: false # 变量对齐
+```
+
+
+
