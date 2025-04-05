@@ -63,7 +63,7 @@ C/C++将堆区内存管理完全交给程序员，导致了无数的内存泄漏
 
 但 Rust 如何做到这一点？不严谨但简洁地描述：**当 Rust 释放变量的 frame 时，Rust 会自动释放变量的堆内存**。
 
-<img src="assets/image-20250405181514331.png" alt="image-20250405181514331" style="zoom: 50%;" />
+<img src="./assets/image-20250405181514331.png" alt="image-20250405181514331" style="zoom: 50%;" />
 
 我们用上面的示例代码解释 Rust 如何自动释放堆内存。在 L1 处， `make_and_drop` 尚未调用，此时内存中保存 `main` 的栈帧。执行到 L2 处，调用 `make_and_drop` 时，`a_box` 指向堆上的 `5`。 一旦 `make_and_drop` 完成，Rust 就会释放其栈帧。`make_and_drop` 包含变量 `a_box`，因此 Rust 也会释放 `a_box` 指向的堆内存数据。因此，堆在 L3 处为空。
 
