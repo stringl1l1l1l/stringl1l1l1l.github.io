@@ -46,10 +46,13 @@ Rust 设计的一个基本目标是**确保程序永远不会有未定义行为*
 
 - **All heap data must be owned by exactly one variable.**  
   所有堆数据必须只由一个变量拥有。
-- **Rust deallocates heap data once its owner goes out of scope. **  
+  
+- **Rust deallocates heap data once its owner goes out of scope.**   
   一旦堆数据的所有者超出范围，Rust 就会释放堆数据。
+  
 - **Ownership can be transferred by moves, which happen on assignments and function calls.**  
   所有权可以通过移动来转移，这发生在赋值和函数调用中。
+  
 - **Heap data can only be accessed through its current owner, not a previous owner.**  
   堆数据只能通过其当前所有者访问，而不能通过以前的所有者进行访问。
 
@@ -57,7 +60,7 @@ Rust 设计的一个基本目标是**确保程序永远不会有未定义行为*
 
 
 
-#### Rust 自动释放堆内存
+#### **Rust 自动释放堆内存**
 
 C/C++将堆区内存管理完全交给程序员，导致了无数的内存泄漏 bugs。Rust 从中吸取了教训，不允许在程序中调用类似`free()`的函数手动释放内存，而是自动释放堆内存。
 
@@ -69,7 +72,7 @@ C/C++将堆区内存管理完全交给程序员，导致了无数的内存泄漏
 
 
 
-#### 变量所有权
+#### **变量所有权**
 
 然而，如果 Rust 只像上面这样做，可能会导致一些额外的问题。如下，两个变量同时绑定到一块堆内存。当程序执行到 L1 处时，`main` 栈帧中拥有两个指向同一块堆内存 `Box::new([0; 1_000_000])` 的变量 `a` 和 `b`。执行到 L2 处时，Rust 会释放 `main` 堆栈，同时自动释放栈帧中所有变量的堆内存，导致了**双重释放（Double Free）**问题。
 
