@@ -1,6 +1,6 @@
 ---
 title: "Rust设计理念概览"
-date: 2024-09-16
+date: 2025-04-05
 author: liwener
 ---
 
