@@ -3,9 +3,6 @@ title: "Kubernetes部署与使用"
 date: 2025-03-08
 author: liwener
 ---
-
-
-
 ## Kubectl
 
 ### 安装
@@ -23,8 +20,6 @@ Linux
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
-
-
 
 ## Helm
 
@@ -55,8 +50,6 @@ helm repo add prometheus-community "https://helm-charts.itboon.top/prometheus-co
 helm repo add ingress-nginx "https://helm-charts.itboon.top/ingress-nginx" --force-update
 helm repo update
 ```
-
-
 
 ## Kind
 
@@ -93,7 +86,28 @@ nodes:
 - role: worker
 ```
 
-## Dubbo
+## Minikube
+
+[Minikube 官方网站](https://minikube.sigs.k8s.io/)
+
+### 安装
+
+```bash
+curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+```
+
+### 启动
+
+```bash
+## 使用国内镜像源
+minikube start \
+  --driver=docker \
+  --container-runtime=docker \
+  --image-mirror-country=cn
+```
+
+Dubbo
 
 创建命名空间
 
@@ -116,6 +130,3 @@ git clone https://github.com/apache/dubbo-admin.git && cd ./dubbo-admin/kubernet
 kubectl apply -f ./ -n dubbo-demo
 kubectl --namespace dubbo-demo port-forward service/dubbo-admin 38080:38080
 ```
-
-
-
