@@ -533,7 +533,7 @@ fn main() {
   compile error !
   ```
   
-  ![s1和s2的内存分布](assets/img/post-images/20240916-Rust-liwener/Rust_4-1.png)  
+  ![s1和s2的内存分布](../assets/img/post-images/20240916-Rust-liwener/Rust_4-1.png)  
   `s1` `s2`指向同一块堆内存，当它们离开作用域时，它们都会尝试释放相同的内存。这是一个叫做**二次释放（double free)**的错误。两次释放相同内存会导致内存污染，它可能会导致潜在的安全漏洞。
   为了确保内存安全，在 `let s2 = s1;` 之后，Rust 认为 `s1` 不再有效，因此 Rust 不需要在 `s1` 离开作用域后清理任何东西。这样就解决了我们的问题！因为只有 `s2` 是有效的，当其离开作用域，它就释放自己的内存。
 
@@ -671,7 +671,7 @@ fn calculate_length(s: &String) -> usize {
 }
 ```
 
-![引用](assets/img/post-images/20240916-Rust-liwener/Rust_4-2.png)  
+![引用](../assets/img/post-images/20240916-Rust-liwener/Rust_4-2.png)  
 同理，函数签名使用 `&` 来表明参数 `s`的类型是一个引用。让我们增加一些解释性的注释：
 
 ```rust
@@ -3926,7 +3926,7 @@ fn main() {
 
 4. `FnOnce` -> `FnMut` -> `Fn`有渐进的依赖关系，例如实现`FnOnce`时，`Fn`和`FnMut`必须实现。
 
-   ![Rust的三种闭包类型](assets/img/post-images/20240916-Rust-liwener/rust-closure.jpg)
+   ![Rust的三种闭包类型](../assets/img/post-images/20240916-Rust-liwener/rust-closure.jpg)
 
 让我们来看看在 `Option<T>` 上的 `unwrap_or_else` 方法的定义：
 
