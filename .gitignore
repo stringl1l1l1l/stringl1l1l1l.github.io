@@ -25,5 +25,5 @@ package-lock.json
 # Misc
 **/.DS_Store
 
-.obsidian/**
-/.obsidian/workspace.json
+.obsidian/*
+.obsidian
