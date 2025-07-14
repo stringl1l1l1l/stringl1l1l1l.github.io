@@ -4,77 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "0c13b331b6e812f3",
-        "type": "split",
+        "id": "0f16f0f553d4f581",
+        "type": "tabs",
         "children": [
           {
-            "id": "1170c0e21ae8edff",
-            "type": "tabs",
-            "dimension": 51.66666666666667,
-            "children": [
-              {
-                "id": "dabeef9a729dc173",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "_posts/2024-09-16-Rust-liwener.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "2024-09-16-Rust-liwener"
-                }
-              }
-            ]
-          },
-          {
-            "id": "877f66ad2768b8b2",
-            "type": "tabs",
-            "dimension": 48.333333333333336,
-            "children": [
-              {
-                "id": "963404674728d9a2",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "terminal:terminal",
-                  "state": {
-                    "terminal:terminal": {
-                      "cwd": "/Users/liwener/Documents/stringl1l1l1l.github.io",
-                      "focus": false,
-                      "profile": {
-                        "args": [],
-                        "executable": "/bin/zsh",
-                        "name": "",
-                        "platforms": {
-                          "darwin": true
-                        },
-                        "pythonExecutable": "python3",
-                        "restoreHistory": false,
-                        "successExitCodes": [
-                          "0",
-                          "SIGINT",
-                          "SIGTERM"
-                        ],
-                        "terminalOptions": {
-                          "documentOverride": null
-                        },
-                        "type": "integrated",
-                        "useWin32Conhost": true
-                      },
-                      "serial": null
-                    }
-                  },
-                  "pinned": true,
-                  "icon": "terminal",
-                  "title": "终端：liwener@MacBook-Air-3:~/Documents/stringl1l1l1l.github.io"
-                }
-              }
-            ]
+            "id": "24e660930451b625",
+            "type": "leaf",
+            "state": {
+              "type": "split-diff-view",
+              "state": {
+                "aFile": ".obsidian/plugins/obsidian-git/data.json",
+                "bFile": ".obsidian/plugins/obsidian-git/data.json",
+                "aRef": ""
+              },
+              "icon": "diff",
+              "title": "Diff: data.json"
+            }
           }
-        ],
-        "direction": "horizontal"
+        ]
       }
     ],
     "direction": "vertical"
@@ -216,7 +163,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 261.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -230,7 +177,7 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "963404674728d9a2",
+  "active": "432f512d5e254b65",
   "lastOpenFiles": [
     "_posts/2024-09-16-Rust-liwener.md",
     "_posts/2024-10-07-Bartender-From-Zero-liwener.md",
