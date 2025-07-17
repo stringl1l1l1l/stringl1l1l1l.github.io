@@ -237,3 +237,96 @@ AlignConsecutiveDeclarations: false # 变量对齐
 
 
 
+### VPN 与内网穿透
+
+最近去武汉出差，一直没有时间折腾的 VPN 突然成为了重大需求。虽然已经折腾过 frp 了，但对于想要远程控制复杂的内网环境，还是配个 VPN 省事。
+
+先介绍一下我的网络环境。出差时手上只有一台 Macbook Air M1 (Mac)，并且白嫖了一台 Azure 服务器 (VPS)。校园大局域网内共有 4 台设备：宿舍内一台不断电的 Win 11 个人 PC（Win），作为 SMB / WebDav 服务器提供流媒体服务，有线连接到一台 TP-LINK 无线路由器；实验室局域内一台树莓派 4b（Raspberrypi），以及一台不断电的 Ubuntu 服务器 (Server)。除了路由器之外，上述所有设备均通过 zerotier 组成 `172.22.0.0/16` 下的虚拟局域网。
+
+#### Wireguard
+VPN 工具选择了 Wireguard，相比 OpenVPN 复杂的证书分发和管理，Wireguard 简单的多，使用类似 SSH RSA 非对称加密的思想创建隧道。
+
+##### 安装
+
+```shell
+# 参考官网信息：https://www.wireguard.com/install/
+
+# macos: 去 github 下可以避开恶心的 App store
+https://github.com/zakosaba/wireguard-macos-app
+
+# ubuntu:
+sudo apt update
+sudo apt install wireguard -y
+
+# win: 
+https://download.wireguard.com/windows-client/wireguard-installer.exe
+
+```
+
+##### 配置
+- **VPS**
+1. 生成公私钥
+```shell
+cd ~
+umask 077
+wg genkey | tee privatekey | wg pubkey > publickey
+```
+
+2. 创建并编辑配置文件：
+```shell
+sudo touch wg0.conf
+# 创建硬链接方便直接在HOME目录下编辑
+sudo ln wg0.conf /etc/wireguard/wg0.conf
+```
+
+```toml
+# wg0.conf
+[Interface]
+Address = 10.10.0.1/32  # 自定义VPS在VPN中的内网IP地址
+SaveConfig = true
+ListenPort = 51820      # 必须和您在安全组中开放的UDP端口一致
+PrivateKey = xxx        # 前一步生成的 privatekey 
+
+# --- Win ---
+[Peer]
+PublicKey = xxxx
+AllowedIPs = 10.10.0.2/32
+
+# --- Mac ---
+[Peer]
+PublicKey = xxxx
+AllowedIPs = 10.10.0.3/32
+
+# --- Raspberrypi ---
+[Peer]
+PublicKey = xxxx
+AllowedIPs = 10.10.0.4/32
+
+```
+
+3. 应用配置文件(必须在 /etc/wireguard 下)
+```shell
+sudo wg-quick up wg0 # wg0 对应/etc/wireguard目录下的配置文件 wg0.conf
+```
+
+4. 关闭
+```shell
+sudo wg-quick down wg0
+```
+
+
+- **Clients**
+1. 生成公私钥
+2. 创建并编辑配置文件
+```shell
+[Interface]
+PrivateKey = xxxx # 刚刚生成的本地公钥
+Address = 10.10.0.x/32
+
+[Peer]
+PublicKey = xxxx # VPN服务端的公钥
+AllowedIPs = 10.10.0.0/24
+Endpoint = {VPS.IP}:51820
+PersistentKeepalive = 25
+```
+3. 应用配置文件
