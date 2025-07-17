@@ -274,23 +274,38 @@ wg genkey | tee privatekey | wg pubkey > publickey
 
 2. 创建并编辑配置文件：
 ```shell
-sudo touch wg0.conf
-# 创建硬链接方便直接在HOME目录下编辑
-sudo ln wg0.conf /etc/wireguard/wg0.conf
+sudo touch /etc/wireguard/wg0.conf
+sudo vim /etc/wireguard/wg0.conf
 ```
 
 ```toml
 # wg0.conf
 [Interface]
-Address = 10.10.0.1/32  # 自定义VPS在VPN中的内网IP地址
+Address = 10.10.0.1/24  # 自定义VPS在VPN中的内网IP地址
 SaveConfig = true
 ListenPort = 51820      # 必须和您在安全组中开放的UDP端口一致
-PrivateKey = xxx        # 前一步生成的 privatekey 
+PrivateKey = xxxx        # 前一步生成的 privatekey 
 
 # --- Win ---
 [Peer]
 PublicKey = xxxx
-AllowedIPs = 10.10.0.2/32
+AllowedIPs = 10.10.0.2/32[Interface]
+
+PrivateKey = 8PyyvorDIwYce1pbgeOzv0hcE9eWjgPsHC9u14CkvHA=
+
+Address = 10.10.0.4/32
+
+  
+
+[Peer]
+
+PublicKey = xs6T2FsGjPlENL2phai2xbW+QoCdy3r9kiW+yLPODgM=
+
+AllowedIPs = 10.10.0.0/24
+
+Endpoint = www.liwener.top:51820
+
+PersistentKeepalive = 25
 
 # --- Mac ---
 [Peer]
@@ -309,6 +324,12 @@ AllowedIPs = 10.10.0.4/32
 sudo wg-quick up wg0 # wg0 对应/etc/wireguard目录下的配置文件 wg0.conf
 ```
 
+4. 查看运行状态
+```shell
+sudo wg 
+# 或者
+sudo wg show
+```
 4. 关闭
 ```shell
 sudo wg-quick down wg0
@@ -332,4 +353,4 @@ PersistentKeepalive = 25
 3. 应用配置文件
 
 ##### 进阶
-完成上面的步骤之后已经可以根据配置文件中定义的 ip 10.10.0.x/32 互相访问了，但对于用惯了局域网内 zerotier + mDNS 的我，这个方
+完成上面的步骤之后已经可以根据配置文件中定义的 ip 10.10.0.x/32 互相访问了，但对于用惯了局域网内 zerotier + mDNS 的我，这个效果还是不够，因此我想尝试在 Wireguard VPN 内使用 zerotier 的虚拟局域网，并实现设备直接通过 mDNS 域名即可互相访问，达成真正意义上的异地丝滑组网。
