@@ -330,3 +330,6 @@ Endpoint = {VPS.IP}:51820
 PersistentKeepalive = 25
 ```
 3. 应用配置文件
+
+##### 进阶
+完成上面的步骤之后已经可以根据配置文件中定义的 ip 10.10.0.x/32 互相访问了，但对于用惯了局域网内 zerotier + mDNS的
