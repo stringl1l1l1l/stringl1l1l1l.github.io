@@ -132,10 +132,6 @@ plugins=(git web-search jsontools z zsh-syntax-highlighting zsh-autosuggestions)
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ```
 
-```
-docker pull forceless/pptagent
-```
-
 安装 Powerlevel10k 主题
 
 ```sh
