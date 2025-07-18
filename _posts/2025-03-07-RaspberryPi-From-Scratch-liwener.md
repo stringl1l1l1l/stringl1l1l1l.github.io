@@ -266,6 +266,7 @@ https://download.wireguard.com/windows-client/wireguard-installer.exe
 ##### 配置
 - **VPS**
 1. 生成公私钥
+
 ```shell
 cd ~
 umask 077
@@ -330,7 +331,8 @@ sudo wg
 # 或者
 sudo wg show
 ```
-4. 关闭
+
+5. 关闭
 ```shell
 sudo wg-quick down wg0
 ```
