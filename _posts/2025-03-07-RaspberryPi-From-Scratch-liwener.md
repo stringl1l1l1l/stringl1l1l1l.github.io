@@ -138,7 +138,10 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 ```
 
-
+```shell
+# 修改到 ~/.zshrc
+ZSH_THEME="powerlevel10k/powerlevel10k"
+```
 
 ### 配置 SSH 秘钥
 
