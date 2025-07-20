@@ -324,6 +324,9 @@ AllowedIPs = 10.10.0.4/32
 sudo wg-quick up wg0 # wg0 对应/etc/wireguard目录下的配置文件 wg0.conf
 ```
 
+```shell
+sudo iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
+```
 4. 查看运行状态
 ```shell
 sudo wg 
@@ -353,5 +356,156 @@ PersistentKeepalive = 25
 ```
 3. 应用配置文件
 
+4. 防火墙配置
+
+```shell
+sudo vim /etc/sysctl.conf
+# 添加下面这行
+net.ipv4.ip_forward = 1
+
+sudo sysctl -p
+
+```
+
+```shell
+sudo ufw allow out on wg0
+sudo ufw allow in on eth0
+sudo ufw allow out on eth0
+sudo ufw route allow in on wg0 out on eth0
+sudo ufw route allow in on eth0 out on wg0
+```
+
 ##### 进阶
 完成上面的步骤之后已经可以根据配置文件中定义的 ip 10.10.0.x/32 互相访问了，但对于用惯了局域网内 zerotier + mDNS 的我，这个效果还是不够，因此我想尝试在 Wireguard VPN 内使用 zerotier 的虚拟局域网，并实现设备直接通过 mDNS 域名即可互相访问，达成真正意义上的异地丝滑组网。
+
+TODO
+> Wireguard 折腾了半天，好不容易能访问到内网了，结果第二天又不行了。谷歌了一下，好像是因为 IPS 会拦截 VPN 的流量 ：（ ，被迫忍痛放弃安全性最高的内网访问方案，改为使用 FRP 内网穿透。
+> 
+---
+
+#### Frp
+- 下载安装
+https://github.com/fatedier/frp/releases/download/
+
+- 服务端
+1. 编写配置文件
+```toml
+# frps.toml
+[common]
+bind_port = 7000
+token = "your token"
+dashboard_port = 7500
+dashboard_user = "admin"
+dashboard_pwd = "yourpwd"
+vhost_http_port = 80
+subdomain_host = ""
+log_file = "/path/to/your/frps.log"
+log_level = "info"
+log_max_days = 3
+tcp_mux = true
+require_ctl_mux = true
+
+# bind_udp_port = 7001 # 如果需要启用，请取消注释
+# kcp_bind_port = 7002 # 如果需要启用，请取消注释
+```
+
+2. 创建并启动后台服务
+```shell
+sudo vim /etc/systemd/system/frps.service
+```
+
+```toml
+[Unit]
+Description=Frp Server Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=path/to/frps -c path/to/frps.toml
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```shell
+sudo systemctl daemon-reload
+sudo systemctl start frps
+sudo systemctl status frps
+```
+
+3. 防火墙开放相关端口
+```shell
+sudo ufw allow 6000:7000/tcp
+sudo ufw allow 80/tcp
+```
+
+- 客户端
+ 1. 编写配置文件
+```toml
+# frpc.toml
+auth.token = "your token"
+serverAddr = "your.example.com"
+serverPort = 7000
+# transport.protocol = "quic"
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000
+
+[[proxies]]
+name = "webdav"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 5244
+subdomain = "webdav"
+
+[[proxies]]
+name = "jellyfin"
+type = "http"
+localIP = "127.0.0.1" 
+localPort = 8096
+subdomain = "jellyfin"
+
+[[proxies]]
+name = "emby"
+type = "http"
+localIP = "127.0.0.1" 
+localPort = 8097
+subdomain = "emby"
+
+[[proxies]]
+name = "rdp"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 3389
+remotePort = 6389
+
+[[proxies]]
+name = "jmc"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 52199
+subdomain = "jmc"
+
+[[proxies]]
+name = "smb"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 445
+remotePort = 6445
+```
+
+2. 作为后台服务启动
+```powershell
+nssm edit Frpc
+nssm start Frpc
+```
+#### **总结**
+
+ VPN 在中国大陆受限太多，并且配置复杂学习门槛稍高，还是内网穿透简单粗暴效果好，终于可以在出差的时候愉快丝滑地访问内网了^ _ ^ 🎵 ～
