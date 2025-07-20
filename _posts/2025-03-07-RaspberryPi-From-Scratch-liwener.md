@@ -236,16 +236,16 @@ AlignConsecutiveDeclarations: false # 变量对齐
 
 
 
-### VPN 与内网穿透
+## VPN 与内网穿透
 
 最近去武汉出差，一直没有时间折腾的 VPN 突然成为了重大需求。虽然已经折腾过 frp 了，但对于想要远程控制复杂的内网环境，还是配个 VPN 省事。
 
 先介绍一下我的网络环境。出差时手上只有一台 Macbook Air M1 (Mac)，并且白嫖了一台 Azure 服务器 (VPS)。校园大局域网内共有 4 台设备：宿舍内一台不断电的 Win 11 个人 PC（Win），作为 SMB / WebDav 服务器提供流媒体服务，有线连接到一台 TP-LINK 无线路由器；实验室局域内一台树莓派 4b（Raspberrypi），以及一台不断电的 Ubuntu 服务器 (Server)。除了路由器之外，上述所有设备均通过 zerotier 组成 `172.22.0.0/16` 下的虚拟局域网。
 
-#### Wireguard
+### Wireguard
 VPN 工具选择了 Wireguard，相比 OpenVPN 复杂的证书分发和管理，Wireguard 简单的多，使用类似 SSH RSA 非对称加密的思想创建隧道。
 
-##### 安装
+#### 安装
 
 ```shell
 # 参考官网信息：https://www.wireguard.com/install/
@@ -262,7 +262,7 @@ https://download.wireguard.com/windows-client/wireguard-installer.exe
 
 ```
 
-##### 配置
+#### 配置
 - **VPS**
 1. 生成公私钥
 
@@ -320,13 +320,13 @@ AllowedIPs = 10.10.0.4/32
 ```
 
 3. 应用配置文件(必须在 /etc/wireguard 下)
-```shell
-sudo wg-quick up wg0 # wg0 对应/etc/wireguard目录下的配置文件 wg0.conf
-```
 
 ```shell
+sudo wg-quick up wg0 # wg0 对应/etc/wireguard目录下的配置文件 wg0.conf
+
 sudo iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
 ```
+
 4. 查看运行状态
 ```shell
 sudo wg 
@@ -342,7 +342,9 @@ sudo wg-quick down wg0
 
 - **Clients**
 1. 生成公私钥
+
 2. 创建并编辑配置文件
+
 ```shell
 [Interface]
 PrivateKey = xxxx # 刚刚生成的本地公钥
@@ -354,6 +356,7 @@ AllowedIPs = 10.10.0.0/24
 Endpoint = {VPS.IP}:51820
 PersistentKeepalive = 25
 ```
+
 3. 应用配置文件
 
 4. 防火墙配置
@@ -375,7 +378,7 @@ sudo ufw route allow in on wg0 out on eth0
 sudo ufw route allow in on eth0 out on wg0
 ```
 
-##### 进阶
+#### 进阶
 完成上面的步骤之后已经可以根据配置文件中定义的 ip 10.10.0.x/32 互相访问了，但对于用惯了局域网内 zerotier + mDNS 的我，这个效果还是不够，因此我想尝试在 Wireguard VPN 内使用 zerotier 的虚拟局域网，并实现设备直接通过 mDNS 域名即可互相访问，达成真正意义上的异地丝滑组网。
 
 TODO
@@ -383,7 +386,7 @@ TODO
 > 
 ---
 
-#### Frp
+### Frp
 - 下载安装
 https://github.com/fatedier/frp/releases/download/
 
@@ -443,7 +446,7 @@ sudo ufw allow 80/tcp
 ```
 
 - 客户端
- 1. 编写配置文件
+1. 编写配置文件
 ```toml
 # frpc.toml
 auth.token = "your token"
