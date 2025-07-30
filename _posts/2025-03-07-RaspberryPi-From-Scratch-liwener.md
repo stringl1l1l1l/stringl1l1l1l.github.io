@@ -447,6 +447,7 @@ sudo ufw allow 80/tcp
 
 - 客户端
 1. 编写配置文件
+
 ```toml
 # frpc.toml
 auth.token = "your token"
