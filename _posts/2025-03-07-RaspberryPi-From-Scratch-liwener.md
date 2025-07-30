@@ -392,6 +392,7 @@ https://github.com/fatedier/frp/releases/download/
 
 - 服务端
 1. 编写配置文件
+
 ```toml
 # frps.toml
 [common]
@@ -413,6 +414,7 @@ require_ctl_mux = true
 ```
 
 2. 创建并启动后台服务
+
 ```shell
 sudo vim /etc/systemd/system/frps.service
 ```
