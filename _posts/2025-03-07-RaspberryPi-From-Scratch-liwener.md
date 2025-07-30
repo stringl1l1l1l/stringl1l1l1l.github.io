@@ -387,8 +387,7 @@ TODO
 ---
 
 ### Frp
-- 下载安装
-https://github.com/fatedier/frp/releases/download/
+- 下载安装 [https://github.com/fatedier/frp/releases]
 
 - 服务端
 1. 编写配置文件
